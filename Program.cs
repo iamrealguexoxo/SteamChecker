@@ -17,7 +17,7 @@ class SteamWorkshopChecker
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
         Console.WriteLine("╔════════════════════════════════════════════════════════════════╗");
-        Console.WriteLine("║        Steam Workshop Item Checker v3.0                        ║");
+        Console.WriteLine("║        Steam Workshop Item Checker v3.0   by iamgue            ║");
         Console.WriteLine("╚════════════════════════════════════════════════════════════════╝\n");
 
         client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
@@ -26,6 +26,7 @@ class SteamWorkshopChecker
         {
             Console.WriteLine("\n📝 Steam Workshop IDs eingeben (getrennt mit ';'):");
             Console.WriteLine("💡 Beispiel: 2709866494;3445949422;3445362877");
+            Console.WriteLine("💡 Tippe 'E' oder 'EXIT' zum Beenden");
             Console.Write("➤ ");
             
             string input = Console.ReadLine()?.Trim();
@@ -34,6 +35,12 @@ class SteamWorkshopChecker
             {
                 Console.WriteLine("❌ Keine IDs eingegeben!");
                 continue;
+            }
+
+            if (input.ToUpper() == "E")
+            {
+                Console.WriteLine("\n👋 Programm wird beendet...");
+                break;
             }
 
             if (input.ToLower() == "exit" || input.ToLower() == "quit")
