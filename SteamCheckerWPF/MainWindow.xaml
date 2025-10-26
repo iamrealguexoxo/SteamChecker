@@ -1,0 +1,110 @@
+<Window x:Class="SteamCheckerWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Steam Workshop Checker Pro" Height="800" Width="1200"
+        Background="#1E1E2E" Foreground="#E0E0E0"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#2a2a3e" Padding="20">
+            <StackPanel>
+                <TextBlock Text="🔍 Steam Workshop Checker Pro" FontSize="28" FontWeight="Bold" Foreground="#00d4ff"/>
+                <TextBlock Text="(C) iamgue 2025" FontSize="12" Foreground="#999" Margin="0,5,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="300"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Side -->
+            <StackPanel Grid.Column="0">
+                <!-- Input -->
+                <Border Background="#2a2a3e" BorderBrush="#4a4a6a" BorderThickness="1" Padding="15" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text="📋 Workshop IDs" FontSize="14" FontWeight="Bold" Foreground="#00d4ff" Margin="0,0,0,10"/>
+                        <TextBox x:Name="InputTextBox" Background="#1a1a2e" Foreground="#e0e0e0" BorderBrush="#4a4a6a" BorderThickness="2" Padding="10" Height="60" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="CheckButton" Content="▶ CHECK" Background="#00d4ff" Foreground="White" Padding="15,10" FontWeight="Bold" Click="CheckButton_Click" Margin="0,0,10,0"/>
+                            <Button x:Name="ClearButton" Content="🗑 CLEAR" Background="#666666" Foreground="White" Padding="15,10" FontWeight="Bold" Click="ClearButton_Click"/>
+                        </StackPanel>
+                        <TextBlock x:Name="StatusText" Text="" FontSize="11" Foreground="#00d966" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Results Grid -->
+                <TextBlock Text="📊 Ergebnisse" FontSize="14" FontWeight="Bold" Foreground="#00d4ff" Margin="0,0,0,10"/>
+                <DataGrid x:Name="ResultsGrid" Background="#2a2a3e" BorderBrush="#4a4a6a" RowBackground="#1a1a2e" AlternatingRowBackground="#252530" Foreground="#e0e0e0" CanUserAddRows="False" AutoGenerateColumns="False" Height="350" Margin="0,0,0,15">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="80"/>
+                        <DataGridTextColumn Header="Workshop ID" Binding="{Binding Id}" Width="110"/>
+                        <DataGridTextColumn Header="Mod ID" Binding="{Binding ModId}" Width="100"/>
+                        <DataGridTextColumn Header="Titel" Binding="{Binding Title}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Summary -->
+                <Border Background="#2a2a3e" BorderBrush="#4a4a6a" BorderThickness="1" Padding="15" CornerRadius="8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                            <TextBlock Text="✅" FontSize="20" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="OkCount" Text="0" FontSize="18" FontWeight="Bold" Foreground="#00d966" HorizontalAlignment="Center"/>
+                            <TextBlock Text="OK" FontSize="11" Foreground="#999" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                            <TextBlock Text="⚠️" FontSize="20" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="WarningCount" Text="0" FontSize="18" FontWeight="Bold" Foreground="#ffaa00" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Warnung" FontSize="11" Foreground="#999" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                            <TextBlock Text="❌" FontSize="20" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="DeletedCount" Text="0" FontSize="18" FontWeight="Bold" Foreground="#ff3333" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Gelöscht" FontSize="11" Foreground="#999" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3" HorizontalAlignment="Center">
+                            <TextBlock Text="🚫" FontSize="20" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="ErrorCount" Text="0" FontSize="18" FontWeight="Bold" Foreground="#ff3333" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Fehler" FontSize="11" Foreground="#999" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <!-- Right Side -->
+            <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                <Border Background="#2a2a3e" BorderBrush="#00aa00" BorderThickness="2" Padding="15" CornerRadius="8" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="🔗 Mod-ID Vergleich" FontSize="13" FontWeight="Bold" Foreground="#00aa00" Margin="0,0,0,10"/>
+                        <TextBox x:Name="ConfigModsTextBox" Background="#1a1a2e" Foreground="#e0e0e0" BorderBrush="#4a4a6a" BorderThickness="1" Padding="10" Height="80" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,10"/>
+                        <Button x:Name="CompareButton" Content="▶ VERGLEICHEN" Background="#00aa00" Foreground="White" Padding="10,8" FontWeight="Bold" Click="CompareButton_Click"/>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock x:Name="CompareResultsHeader" Text="📊 Vergleich" FontSize="12" FontWeight="Bold" Foreground="#00d4ff" Visibility="Collapsed" Margin="0,0,0,8"/>
+                <TextBox x:Name="CompareResultsBox" Background="#2a2a3e" Foreground="#e0e0e0" BorderBrush="#4a4a6a" BorderThickness="1" Padding="10" Height="120" TextWrapping="Wrap" IsReadOnly="True" Visibility="Collapsed" Margin="0,0,0,20"/>
+
+                <Border Background="#2a2a3e" BorderBrush="#4a4a6a" BorderThickness="1" Padding="15">
+                    <StackPanel>
+                        <TextBlock Text="💾 Export" FontSize="13" FontWeight="Bold" Foreground="#00d4ff" Margin="0,0,0,10"/>
+                        <Button x:Name="ExportButton" Content="📥 EXPORTIEREN" Background="#0099ff" Foreground="White" Padding="10,8" FontWeight="Bold" Click="ExportButton_Click" Margin="0,0,0,10"/>
+                        <Button x:Name="CopyButton" Content="📋 KOPIEREN" Background="#0099ff" Foreground="White" Padding="10,8" FontWeight="Bold" Click="CopyButton_Click"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
