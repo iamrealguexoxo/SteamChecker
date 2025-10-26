@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -204,6 +204,48 @@ class SteamWorkshopChecker
         }
 
         Console.WriteLine("\n" + new string('═', 120));
+
+        // ===== ABFRAGE: Mods mit Warnungen entfernen =====
+        if (withWarnings.Any())
+        {
+            Console.WriteLine("\n❓ Möchtest du die Mods mit Warnungen aus deiner Liste entfernen?");
+            Console.WriteLine("⚠️  Diese Mods werden gelöscht:");
+            foreach (var (id, title, warning) in withWarnings)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"  - {id}");
+                Console.ResetColor();
+            }
+            Console.WriteLine("\n(j/n)");
+            Console.Write("➤ ");
+            
+            string removeInput = Console.ReadLine()?.Trim().ToLower();
+
+            if (removeInput == "j" || removeInput == "yes" || removeInput == "y")
+            {
+                var idsToRemove = withWarnings.Select(o => o.id).ToHashSet();
+                var remainingIds = ok.Where(o => !idsToRemove.Contains(o.id)).Select(o => o.id).ToList();
+
+                Console.WriteLine("\n" + new string('═', 120));
+                Console.WriteLine("\n✅ AKTUALISIERTE LISTE (ohne Mods mit Warnungen):\n");
+                
+                if (remainingIds.Count > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(string.Join(";", remainingIds));
+                    Console.ResetColor();
+                    Console.WriteLine($"\n📊 {remainingIds.Count} Mods in deiner Liste verbleibend");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("⚠️  Alle Mods werden entfernt!");
+                    Console.ResetColor();
+                }
+                
+                Console.WriteLine("\n" + new string('═', 120));
+            }
+        }
     }
 
     static void CompareModIds()
