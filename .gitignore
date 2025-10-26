@@ -1,0 +1,40 @@
+# Visual Studio / .NET build output
+bin/
+obj/
+
+# VS and IDE settings
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / ReSharper
+.idea/
+*.DotSettings.user
+
+# NuGet
+*.nupkg
+# packages/ # Uncomment if you use packages folder
+
+# Logs
+*.log
+
+# Test results
+TestResults/
+
+# Others
+*.cache
+*.tmp
+~$*
+
+# Python cache (for the helper script)
+__pycache__/
+*.pyc
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# VS Code workspace settings (keep if you want to share)
+# .vscode/
