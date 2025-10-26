@@ -81,8 +81,8 @@ class SteamWorkshopChecker
         workshopResults.Clear();
         
         var deleted = new List<string>();
-        var ok = new List<(string id, string title, string warning)>();
-        var errors = new List<(string id, string error)>();
+        var ok = new List<(string id, string? info, string? warning)>();
+        var errors = new List<(string id, string? error)>();
         var noTitle = new List<string>();
 
         Console.WriteLine($"\n🔍 Überprüfe {totalCount} Workshop-Items...\n");
@@ -348,7 +348,7 @@ class SteamWorkshopChecker
         Console.WriteLine("\n" + new string('═', 120));
     }
 
-    static async Task<(string status, string info, string warning)> CheckWorkshopId(string workshopId)
+    static async Task<(string status, string? info, string? warning)> CheckWorkshopId(string workshopId)
     {
         try
         {
@@ -472,7 +472,7 @@ class SteamWorkshopChecker
                 return result;
         }
 
-        return null;
+        return null!;
     }
 
     static string SplitModId(string info)
