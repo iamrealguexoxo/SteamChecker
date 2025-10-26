@@ -1,4 +1,4 @@
-# Steam Workshop Item Checker
+# Steam Workshop Item Checker für Zomboid
 
 English version below — Deutsche Version zuerst.
 
