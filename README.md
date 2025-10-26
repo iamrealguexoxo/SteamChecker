@@ -112,4 +112,4 @@ Issues und Pull Requests sind willkommen. Wenn du neue Muster für die Erkennung
 
 ## Lizenz
 
-Aktuell keine Lizenzdatei hinterlegt. Wenn du Open-Source möchtest, bietet sich z. B. die MIT-Lizenz an. Sag Bescheid – ich lege sie gern an und update die README.
+alles freeeeeeeeeee, gib ihm
