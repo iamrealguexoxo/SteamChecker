@@ -1,239 +1,137 @@
-# SteamChecker
+# Steam Workshop Item Checker
 
-Ein schneller CLI-Checker für Steam Workshop Items (z. B. Project Zomboid). Du gibst eine oder mehrere Workshop-IDs ein, und das Tool prüft, ob sie existieren, gelöscht/privat sind, extrahiert den Titel sowie die Mod ID und markiert problematische Einträge (z. B. "Outdated" oder andere Versionen).
-
-> Im Repo sind zwei Varianten enthalten:
-> - C#/.NET 9 (empfohlen) – Datei: `Program.cs`
-> - Python (Optional) – Datei: `steam_workshop_checker_python.py`
+English version below — Deutsche Version zuerst.
 
 ---
 
-## Features
+## 🇩🇪 Deutsch
 
-- Mehrere Workshop-IDs auf einmal prüfen (Eingabe per `;` getrennt)
-- Status je ID: OK, GELÖSCHT, WARNUNG (kein Titel), FEHLER/Timeout
-- Titel-Erkennung via HTML-Parsing (HtmlAgilityPack) + Fallback via OpenGraph
-- Automatisches Extrahieren der Mod ID aus der Workshop-Seite
-- Warnhinweise bei:
-  - "Working Outdated"/"Outdated" → [ACHTUNG OUTDATE]
-  - Nur "B42" im Titel (ohne "B41") → [ANDERE VERSION]
-- Interaktive Gegenprüfung eigener Mod-IDs (Config ↔ Workshop)
-- Farbiges, kompaktes CLI-Output und Zusammenfassungen
+Ein kleines CLI-Tool zum Prüfen von Steam Workshop Items anhand ihrer IDs. Es liest Titel und Mod-ID aus, erkennt gelöschte/private Einträge sowie Warnungen (z. B. „Outdated“ oder nur „B42“) und bietet dir nun interaktiv an, Mods mit Warnungen aus deiner Liste zu entfernen.
 
----
+### Features
+- Prüfung beliebiger Workshop-IDs (eingeben mit `;` getrennt)
+- Ermittelt Titel; erkennt „gelöscht“, „kein Titel“ (z. B. privat) und Fehler
+- Extrahiert die Mod-ID aus der Workshop-Seite und zeigt sie an
+- Warnungen:
+  - [ACHTUNG OUTDATE], wenn Titel „Outdated“ enthält
+  - [ANDERE VERSION], wenn Titel „B42“ enthält, aber kein „B41“
+- NEU: Interaktive Abfrage, ob Mods mit Warnungen aus der Liste entfernt werden sollen
+  - Wenn „Ja“, wird eine bereinigte Liste (Semikolon-getrennt) ausgegeben
+- Optionaler Abgleich deiner eigenen Mod-IDs (z. B. aus einer Config) mit den gefundenen Mod-IDs
+- Zusammenfassungen und farbige Ausgabe für schnellen Überblick
+- Rate-Limit-freundliche Abfragen (kurzer Delay zwischen Anfragen)
 
-## Voraussetzungen
+### Voraussetzungen
+- .NET SDK 9.0+
+- Windows PowerShell oder Terminal
 
-- .NET SDK 9.0
-- Windows PowerShell, macOS oder Linux Shell (läuft plattformübergreifend, getestet auf Windows)
-- Optional für die Python-Variante: Python 3.8+ und `requests`
-
----
-
-## Schnellstart (C#/.NET)
-
-1) Repository klonen
-2) Abhängigkeiten werden automatisch über NuGet geladen (HtmlAgilityPack)
-3) Build und Run
-
+### Schnellstart
 ```powershell
-# Im Repo-Root (Ordner mit SteamChecker.csproj)
-
 dotnet build
-
 dotnet run --project .\SteamChecker.csproj
 ```
 
-Du kannst auch die vorhandenen VS Code Tasks nutzen:
+### Nutzung
+1) IDs eingeben (Semikolon-getrennt):
+```
+2709866494;3445949422;3445362877
+```
 
-- Build: "build"
-- Watch/Run: "watch" (Hot-reload für schnelle Iteration)
-- Publish: "publish"
+2) Das Tool prüft die Items und zeigt Ergebnisse plus Zusammenfassung.
 
-In VS Code: Terminal → Run Task → gewünschten Task wählen.
+3) NEU: Wenn Warnungen gefunden wurden, wirst du gefragt:
+```
+❓ Möchtest du die Mods mit Warnungen aus deiner Liste entfernen?
+(j/n)
+```
+- „j“/„y“/„yes“ → Es wird eine bereinigte Liste (ohne diese Mods) ausgegeben:
+```
+✅ AKTUALISIERTE LISTE (ohne Mods mit Warnungen):
+1234567890;2345678901;...
+📊 12 Mods in deiner Liste verbleibend
+```
+- „n“ → Keine Änderung, nur Anzeige.
+
+4) Optional: Abgleich deiner Mod-IDs
+Nach einem Check wirst du gefragt:
+```
+🔍 Möchtest du deine Mod-IDs abgleichen? (j/n)
+```
+- Gib deine Mod-IDs ein (Semikolon-getrennt), z. B.:
+```
+iMeds;SCEEP_Hotwire;GreenHouse
+```
+- Du erhältst „VORHANDEN“, „FEHLT“ und „ZUSÄTZLICH“ (Workshop-Mods, die nicht in deiner Liste sind).
+
+### Hinweise & Grenzen
+- HTML-Parsing kann brechen, wenn Valve das Markup ändert.
+- Private/gelöschte Items liefern oft keinen Titel („NO_TITLE“).
+- Es gibt eine kurze Verzögerung zwischen Anfragen, um Rate Limits zu vermeiden.
+- Erkennung der Mod-ID basiert auf regulären Ausdrücken und kann je nach Beschreibung/Seite variieren.
 
 ---
 
-## Nutzung
+## 🇬🇧 English
 
-Nach dem Start wirst du aufgefordert, Workshop-IDs einzugeben (mit `;` trennen):
+A small CLI tool to check Steam Workshop items by their IDs. It reads the title and extracts the Mod ID, detects deleted/private entries and warnings (e.g., “Outdated” or “B42-only”), and now interactively offers to remove mods with warnings from your list.
 
-```
-📝 Steam Workshop IDs eingeben (getrennt mit ';'):
-💡 Beispiel: 2709866494;3445949422;3445362877
-➤ 2709866494;3445949422;3445362877
-```
+### Features
+- Validate any number of Workshop IDs (semicolon-separated input)
+- Reads the item title; detects “deleted”, “no title” (e.g., private), and errors
+- Extracts the Mod ID from the page and appends it to the title
+- Warnings:
+  - [ACHTUNG OUTDATE] when title contains “Outdated”
+  - [ANDERE VERSION] when title contains “B42” but not “B41”
+- NEW: Interactive prompt to remove mods with warnings from your list
+  - If accepted, prints a cleaned semicolon-separated list
+- Optional comparison of your own config Mod IDs with the found Workshop Mod IDs
+- Summaries with colored output for quick scanning
+- Rate-limit-friendly requests (small delay between calls)
 
-Das Tool ruft die Workshop-Seiten ab, analysiert Titel und Mod ID und zeigt danach eine Zusammenfassung.
-Anschließend kannst du optional deine eigenen Mod-IDs (z. B. aus einer Server-Config) eingeben, um sie mit den gefundenen Mod IDs abzugleichen.
+### Requirements
+- .NET SDK 9.0+
+- Windows PowerShell or terminal
 
-### Beispiel-Workflow
-
-1) IDs prüfen → Status/Warnings/Mod IDs werden angezeigt
-2) "Möchtest du deine Mod-IDs abgleichen? (j/n)" → `j`
-3) Eigene Mod-IDs eingeben, wieder per `;` getrennt (z. B. `iMeds;SCEEP_Hotwire;GreenHouse`)
-4) Ergebnis zeigt: vorhanden, fehlend, zusätzlich
-
----
-
-## Python-Variante (optional)
-
+### Quick start
 ```powershell
-# Optional: nur wenn du die Python-Variante ausprobieren willst
-python .\steam_workshop_checker_python.py
-```
-
-Die Python-Version bietet einen sehr ähnlichen Funktionsumfang (Requests + Regex-Parsing) und eignet sich als Referenz oder zum schnellen Testen.
-
----
-
-## Hinweise & Grenzen
-
-- Das Tool parst HTML von Workshop-Seiten. Wenn Valve/Steam das Markup ändert, kann die Erkennung (Titel/Mod ID) fehlschlagen.
-- Private oder gelöschte Items liefern oft keinen Titel → werden als WARNUNG/NO_TITLE oder GELÖSCHT klassifiziert.
-- Es gibt ein kleines Delay (600 ms) zwischen Anfragen, um die Seite nicht zu stark zu belasten. Bei vielen IDs dauert es entsprechend länger.
-- Keine Nutzung einer offiziellen Steam-API. Rate Limits/CAPTCHAs können auftreten.
-
----
-
-## Technik-Stack
-
-- C# 12, .NET 9.0
-- HtmlAgilityPack für robustes HTML-Parsing
-- Regex zur Mod-ID-Erkennung
-
----
-
-## Beiträge
-
-Issues und Pull Requests sind willkommen. Wenn du neue Muster für die Erkennung hast (z. B. andere Spiele/Seitenstrukturen), eröffne gern ein PR.
-
----
-
-## Lizenz
-
-alles freeeeeeeeeee, gib ihm
-
-
-# SteamChecker
-
-A fast CLI checker for Steam Workshop items (e.g., Project Zomboid). You enter one or more Workshop IDs, and the tool checks whether they exist, are deleted/private, extracts the title and Mod ID, and flags problematic entries (e.g., "Outdated" or different versions).
-
-> The repository contains two variants:
-> - C#/.NET 9 (recommended) – File: `Program.cs`
-> - Python (optional) – File: `steam_workshop_checker_python.py`
-
----
-
-## Features
-
-- Check multiple Workshop IDs at once (input separated by `;`)
-- Status per ID: OK, DELETED, WARNING (no title), ERROR/Timeout
-- Title detection via HTML parsing (HtmlAgilityPack) + OpenGraph fallback
-- Automatic extraction of the Mod ID from the Workshop page
-- Warnings for:
-  - "Working Outdated"/"Outdated" → [ATTENTION OUTDATED]
-  - Only "B42" in title (without "B41") → [DIFFERENT VERSION]
-- Interactive comparison of your own Mod IDs (Config ↔ Workshop)
-- Colorful, compact CLI output and summaries
-
----
-
-## Requirements
-
-- .NET SDK 9.0
-- Windows PowerShell, macOS, or Linux Shell (cross-platform, tested on Windows)
-- Optional for the Python variant: Python 3.8+ and `requests`
-
----
-
-## Quick Start (C#/.NET)
-
-1) Clone the repository
-2) Dependencies are automatically loaded via NuGet (HtmlAgilityPack)
-3) Build and run
-
-```powershell
-# In the repo root (folder with SteamChecker.csproj)
-
 dotnet build
-
 dotnet run --project .\SteamChecker.csproj
 ```
 
-You can also use the existing VS Code tasks:
-
-- Build: "build"
-- Watch/Run: "watch" (Hot-reload for quick iteration)
-- Publish: "publish"
-
-In VS Code: Terminal → Run Task → select the desired task.
-
----
-
-## Usage
-
-After starting, you'll be prompted to enter Workshop IDs (separated by `;`):
-
+### Usage
+1) Enter IDs (semicolon-separated):
 ```
-📝 Enter Steam Workshop IDs (separated by ';'):
-💡 Example: 2709866494;3445949422;3445362877
-➤ 2709866494;3445949422;3445362877
+2709866494;3445949422;3445362877
 ```
 
-The tool fetches the Workshop pages, analyzes the title and Mod ID, and then displays a summary.
-Optionally, you can enter your own Mod IDs (e.g., from a server config) to compare them with the found Mod IDs.
+2) The tool checks all items and prints results plus a summary.
 
-### Example Workflow
-
-1) Check IDs → Status/Warnings/Mod IDs are displayed
-2) "Do you want to compare your Mod IDs? (y/n)" → `y`
-3) Enter your own Mod IDs, again separated by `;` (e.g., `iMeds;SCEEP_Hotwire;GreenHouse`)
-4) Result shows: present, missing, additional
-
----
-
-## Python Variant (optional)
-
-```bash
-# Optional: only if you want to try the Python variant
-python steam_workshop_checker_python.py
+3) NEW: If warnings were found, you’ll be asked:
 ```
+❓ Do you want to remove the mods with warnings from your list?
+(y/n)
+```
+- “y”/“yes” → A cleaned list (without those mods) is printed:
+```
+✅ UPDATED LIST (without mods with warnings):
+1234567890;2345678901;...
+📊 12 mods remain in your list
+```
+- “n” → No changes, just display.
 
-The Python version offers very similar functionality (Requests + Regex parsing) and serves as a reference or for quick testing.
+4) Optional: Compare your Mod IDs
+After a check you’ll be asked:
+```
+🔍 Do you want to compare your Mod IDs? (y/n)
+```
+- Enter your Mod IDs (semicolon-separated), e.g.:
+```
+iMeds;SCEEP_Hotwire;GreenHouse
+```
+- You’ll get “FOUND”, “MISSING”, and “EXTRA” (Workshop mods not in your list).
 
----
-
-## Notes & Limitations
-
-- The tool parses HTML from Workshop pages. If Valve/Steam changes the markup, detection (title/Mod ID) may fail.
-- Private or deleted items often don't provide a title → classified as WARNING/NO_TITLE or DELETED.
-- There's a small delay (600 ms) between requests to avoid overloading the page. With many IDs, this takes correspondingly longer.
-- No use of an official Steam API. Rate limits/CAPTCHAs may occur.
-
----
-
-## Tech Stack
-
-- C# 12, .NET 9.0
-- HtmlAgilityPack for robust HTML parsing
-- Regex for Mod ID detection
-
----
-
-## Contributions
-
-Issues and pull requests are welcome. If you have new patterns for detection (e.g., other games/page structures), feel free to open a PR.
-
----
-
-## License
-
-Everything is free to use – go for it!
-
----
-
-## Links
-
-- GitHub Repository: [iamrealguexoxo/SteamChecker](https://github.com/iamrealguexoxo/SteamChecker)
-
+### Notes & limitations
+- HTML parsing may break if Valve changes the page structure.
+- Private/deleted items often return no title (“NO_TITLE”).
+- There’s a short delay between requests to be gentle on rate limits.
+- Mod ID extraction is regex-based and may vary with item descriptions/pages.
