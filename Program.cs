@@ -17,8 +17,7 @@ class SteamWorkshopChecker
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
         Console.WriteLine("╔════════════════════════════════════════════════════════════════╗");
-        Console.WriteLine("║        Steam Workshop Item Checker v3.0     by iamgueexit
-                  ║");
+        Console.WriteLine("║        Steam Workshop Item Checker v3.0     by iamgue          ║");
         Console.WriteLine("╚════════════════════════════════════════════════════════════════╝\n");
 
         client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
@@ -399,6 +398,13 @@ class SteamWorkshopChecker
             if (title == null)
             {
                 return ("NO_TITLE", null, null);
+            }
+
+            // Prüfe ob wir auf der Startseite landen (Workshop offline oder gelöscht)
+            if (title.Contains("Project Zomboid", StringComparison.OrdinalIgnoreCase) && 
+                title.Contains("Steam Community", StringComparison.OrdinalIgnoreCase))
+            {
+                return ("GELÖSCHT", null, null);
             }
 
             // Suche nach Mod ID

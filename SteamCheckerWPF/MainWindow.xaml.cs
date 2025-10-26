@@ -114,6 +114,13 @@ namespace SteamCheckerWPF
                 if (string.IsNullOrEmpty(title))
                     return ("⚠️ WARNUNG", ("Kein Titel", ""), "");
 
+                // Prüfe ob wir auf der Startseite landen (Workshop offline oder gelöscht)
+                if (title.Contains("Project Zomboid", StringComparison.OrdinalIgnoreCase) && 
+                    title.Contains("Steam Community", StringComparison.OrdinalIgnoreCase))
+                {
+                    return ("❌ GELÖSCHT", ("", ""), "");
+                }
+
                 string modId = ExtractModId(html);
                 string warning = "";
 
