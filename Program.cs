@@ -107,7 +107,8 @@ class SteamWorkshopChecker
                 if (!string.IsNullOrEmpty(warning))
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write($"[{currentCount}/{totalCount}] ✅ OK: {id} - {info}");
+                    Console.Write($"[{currentCount}/{totalCount}] ✅ OK: {id} - ");
+                    PrintWithColoredModId(info);
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($" {warning}");
                     Console.ResetColor();
@@ -115,7 +116,9 @@ class SteamWorkshopChecker
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"[{currentCount}/{totalCount}] ✅ OK: {id} - {info}");
+                    Console.Write($"[{currentCount}/{totalCount}] ✅ OK: {id} - ");
+                    PrintWithColoredModId(info);
+                    Console.WriteLine();
                     Console.ResetColor();
                 }
             }
@@ -463,5 +466,48 @@ class SteamWorkshopChecker
         }
 
         return null;
+    }
+
+    static string SplitModId(string info)
+    {
+        // Suche nach "[ID: ...]" am Ende und färbe es blau
+        if (string.IsNullOrEmpty(info))
+            return info;
+
+        int idIndex = info.IndexOf("[ID:");
+        if (idIndex == -1)
+            return info; // Kein [ID: ...] gefunden
+
+        string titlePart = info.Substring(0, idIndex);
+        string idPart = info.Substring(idIndex);
+
+        Console.Write(titlePart);
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.Write(idPart);
+        Console.ForegroundColor = ConsoleColor.Green;
+
+        return ""; // Wir haben bereits alles geschrieben
+    }
+
+    static void PrintWithColoredModId(string info)
+    {
+        // Schreib Titel normal (grün durch vorherige Color) und Mod ID in blau
+        if (string.IsNullOrEmpty(info))
+            return;
+
+        int idIndex = info.IndexOf("[ID:");
+        if (idIndex == -1)
+        {
+            Console.Write(info);
+            return;
+        }
+
+        string titlePart = info.Substring(0, idIndex);
+        string idPart = info.Substring(idIndex);
+
+        Console.Write(titlePart);
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.Write(idPart);
+        Console.ForegroundColor = ConsoleColor.Green;
     }
 }
