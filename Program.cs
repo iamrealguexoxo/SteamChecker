@@ -17,7 +17,7 @@ class SteamWorkshopChecker
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
         Console.WriteLine("╔════════════════════════════════════════════════════════════════╗");
-        Console.WriteLine("║        Steam Workshop Item Checker v3.0                        ║");
+        Console.WriteLine("║        Steam Workshop Item Checker v3.0     by iamgue          ║");
         Console.WriteLine("╚════════════════════════════════════════════════════════════════╝\n");
 
         client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
