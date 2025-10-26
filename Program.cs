@@ -17,7 +17,7 @@ class SteamWorkshopChecker
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
         Console.WriteLine("╔════════════════════════════════════════════════════════════════╗");
-        Console.WriteLine("║        Steam Workshop Item Checker v3.0   by iamgue            ║");
+        Console.WriteLine("║        Steam Workshop Item Checker v3.0                        ║");
         Console.WriteLine("╚════════════════════════════════════════════════════════════════╝\n");
 
         client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
@@ -439,18 +439,27 @@ class SteamWorkshopChecker
 
     static string ExtractModId(string htmlContent)
     {
-        // Suche nach: Mod ID: [beliebiger text]
-        var match = Regex.Match(htmlContent, @"Mod\s+ID:\s*([a-zA-Z0-9_\-\[\]]+)", RegexOptions.IgnoreCase);
+        // Suche GENAU nach: Mod ID: " iMeds" (mit Anführungszeichen und Zeilenumbruch möglich)
+        var match = Regex.Match(htmlContent, @"<b>Mod\s+ID:</b>\s*=\s*[""']([a-zA-Z0-9_\-\[\]]+)[""']", RegexOptions.IgnoreCase | RegexOptions.Singleline);
         if (match.Success)
         {
             return match.Groups[1].Value.Trim();
         }
 
-        // Fallback: Suche nach mod.info oder ähnliches
-        match = Regex.Match(htmlContent, @"mod[""']?\s*:\s*[""']?([a-zA-Z0-9_\-]+)[""']?", RegexOptions.IgnoreCase);
+        // Fallback: Mod ID: direkt gefolgt von Text in Anführungszeichen
+        match = Regex.Match(htmlContent, @"Mod\s+ID[:\s]*[""']([a-zA-Z0-9_\-\[\]]+)[""']", RegexOptions.IgnoreCase);
         if (match.Success)
         {
             return match.Groups[1].Value.Trim();
+        }
+
+        // Fallback: Mod ID: gefolgt von Text (ohne Anführungszeichen)
+        match = Regex.Match(htmlContent, @"Mod\s+ID:\s*([a-zA-Z0-9_\-\[\]]+)", RegexOptions.IgnoreCase);
+        if (match.Success)
+        {
+            string result = match.Groups[1].Value.Trim();
+            if (result != "=" && result != "$0")
+                return result;
         }
 
         return null;
