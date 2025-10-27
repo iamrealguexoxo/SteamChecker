@@ -36,5 +36,5 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# VS Code workspace settings (keep if you want to share)
-# .vscode/
+# VS Code workspace settings
+.vscode/
