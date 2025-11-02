@@ -1,0 +1,84 @@
+name: update-readme-changelog
+
+on:
+  push:
+    paths:
+      - 'CHANGELOG.md'
+      - 'README.md'
+      - '.github/workflows/update-readme-changelog.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update README from CHANGELOG
+        shell: bash
+        run: |
+          python3 - << 'PY'
+          import os,re,sys
+          README = 'README.md'
+          START = '<!-- CHANGELOG:START -->'
+          END = '<!-- CHANGELOG:END -->'
+          FALLBACK = 'Noch keine eingebetteten Einträge. Siehe vollständige Historie in CHANGELOG.md.'
+
+          def extract_latest_section():
+              if not os.path.exists('CHANGELOG.md'):
+                  return FALLBACK
+              with open('CHANGELOG.md', 'r', encoding='utf-8') as f:
+                  txt = f.read()
+              lines = txt.splitlines()
+
+              # Find first '## ' section (skip title/intro)
+              start_idx = None
+              for i, l in enumerate(lines):
+                  if l.strip().startswith('## '):
+                      start_idx = i
+                      break
+              if start_idx is None:
+                  return FALLBACK
+
+              out = []
+              for j in range(start_idx, len(lines)):
+                  if j > start_idx and lines[j].startswith('## '):
+                      break
+                  out.append(lines[j])
+
+              # Trim trailing blank lines
+              while out and not out[-1].strip():
+                  out.pop()
+              return ('\n'.join(out)).strip() or FALLBACK
+
+          new_block = extract_latest_section()
+
+          if not os.path.exists(README):
+              print('README.md not found, nothing to do.')
+              sys.exit(0)
+
+          with open(README, 'r', encoding='utf-8') as f:
+              rd = f.read()
+          if START not in rd or END not in rd:
+              print('Markers not found in README; skipping update.')
+              sys.exit(0)
+
+          pattern = re.compile(re.escape(START) + r"[\s\S]*?" + re.escape(END), re.M)
+          updated = pattern.sub(START + "\n" + new_block + "\n" + END, rd)
+          if updated != rd:
+              with open(README, 'w', encoding='utf-8', newline='\n') as f:
+                  f.write(updated)
+              print('README updated.')
+          else:
+              print('README already up-to-date.')
+          PY
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs(README): embed latest changes from CHANGELOG.md"
+          file_pattern: README.md

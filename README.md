@@ -6,7 +6,15 @@ Ein modernes Tool zum Prüfen und Verwalten von Steam Workshop Items. Verfügbar
 
 ---
 
-## 🖼️ WPF Graphical Interface (New!)
+## � Neueste Änderungen / Latest changes
+
+<!-- CHANGELOG:START -->
+Noch keine eingebetteten Einträge. Siehe vollständige Historie in CHANGELOG.md.
+<!-- CHANGELOG:END -->
+
+---
+
+## �🖼️ WPF Graphical Interface (New!)
 
 ![Steam Workshop Checker Pro GUI](screenshot-wpf.png)
 
