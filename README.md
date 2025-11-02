@@ -17,12 +17,39 @@ Die neue **WPF-GUI** bietet eine benutzerfreundliche grafische Oberfläche mit:
 - 📊 Statistik-Übersicht (OK, Warnungen, Gelöscht, Fehler)
 - 💾 Export- und Kopier-Funktionen
 - 🎨 Dunkles Design mit farbigen Highlights
+ - ℹ️ About-Dialog mit animiertem Logo und dynamischer Versionsanzeige
 
 **Start der WPF-App:**
 ```powershell
 cd .\SteamCheckerWPF
 dotnet build
 dotnet run
+```
+
+### ℹ️ About-Dialog & Version
+
+- Im Hauptfenster rechts oben: Button „ℹ Über“ öffnet den About-Dialog.
+- Der Dialog zeigt dein animiertes Logo (`loading.gif`) und „made with ❤ by iamguexoxo“.
+- Die Version wird automatisch aus den Assembly-Metadaten gelesen in der Reihenfolge:
+  1) `AssemblyInformationalVersion`
+  2) `AssemblyFileVersion`
+  3) `Assembly.GetName().Version`
+
+So kannst du die angezeigte Version bequem steuern (optional in der `SteamCheckerWPF.csproj`):
+
+```xml
+<PropertyGroup>
+  <AssemblyVersion>1.2.0.0</AssemblyVersion>
+  <FileVersion>1.2.0.0</FileVersion>
+  <InformationalVersion>1.2.0-pre</InformationalVersion>
+  <!-- ‚InformationalVersion‘ unterstützt SemVer/Pre-release-Suffixe und wird bevorzugt angezeigt. -->
+  <!-- Das WPF-Header zeigt „• v<Version>“, der About-Dialog „v<Version>“. -->
+  <!-- Das animierte Logo liegt unter SteamCheckerWPF/loading.gif und ist als Resource eingebunden. -->
+  <!-- Passe die Datei einfach an, wenn du ein anderes Logo verwenden willst. -->
+  <!-- Hinweis: Ein altes WinForms-Tool (pc_automation_tool.cs) ist im WPF-Projekt ausgeschlossen. -->
+  <!-- Wenn du es nutzen möchtest, können wir es in ein eigenes WinForms-Projekt auslagern. -->
+  
+</PropertyGroup>
 ```
 
 ---
@@ -197,7 +224,10 @@ SteamChecker/
 └── SteamCheckerWPF/            # WPF GUI Application
     ├── MainWindow.xaml         # UI Layout
     ├── MainWindow.xaml.cs      # UI Logic
+  ├── AboutWindow.xaml        # About dialog (animated logo + version)
+  ├── AboutWindow.xaml.cs     # About dialog logic
     ├── App.xaml                # App config
+  ├── loading.gif             # Animated logo for About dialog
     └── SteamCheckerWPF.csproj  # GUI project file
 ```
 
