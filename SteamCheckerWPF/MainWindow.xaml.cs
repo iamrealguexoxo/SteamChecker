@@ -19,6 +19,11 @@ namespace SteamCheckerWPF
             InitializeComponent();
             ResultsGrid.ItemsSource = results;
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+            try
+            {
+                HeaderVersionText.Text = $"• v{AboutWindow.GetVersionString()}";
+            }
+            catch { /* non-fatal */ }
         }
 
         private async void CheckButton_Click(object sender, RoutedEventArgs e)
@@ -241,14 +246,23 @@ namespace SteamCheckerWPF
             WarningCount.Text = "0";
             StatusText.Text = "";
         }
+
+        private void AboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new AboutWindow
+            {
+                Owner = this
+            };
+            win.ShowDialog();
+        }
     }
 
     public class WorkshopResult
     {
-        public string Id { get; set; }
-        public string Status { get; set; }
-        public string Title { get; set; }
-        public string ModId { get; set; }
-        public string Warning { get; set; }
+        public string? Id { get; set; }
+        public string? Status { get; set; }
+        public string? Title { get; set; }
+        public string? ModId { get; set; }
+        public string? Warning { get; set; }
     }
 }

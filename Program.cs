@@ -29,7 +29,7 @@ class SteamWorkshopChecker
             Console.WriteLine("💡 Tippe 'E' oder 'EXIT' zum Beenden");
             Console.Write("➤ ");
             
-            string input = Console.ReadLine()?.Trim();
+            string? input = Console.ReadLine()?.Trim();
             
             if (string.IsNullOrEmpty(input))
             {
@@ -65,7 +65,7 @@ class SteamWorkshopChecker
             // Nach dem ersten Check: Frage nach Mod-ID Vergleich
             Console.WriteLine("\n🔍 Möchtest du deine Mod-IDs abgleichen? (j/n)");
             Console.Write("➤ ");
-            string compareInput = Console.ReadLine()?.Trim().ToLower();
+            string? compareInput = Console.ReadLine()?.Trim().ToLower();
 
             if (compareInput == "j" || compareInput == "yes" || compareInput == "y")
             {
@@ -222,7 +222,7 @@ class SteamWorkshopChecker
             Console.WriteLine("\n(j/n)");
             Console.Write("➤ ");
             
-            string removeInput = Console.ReadLine()?.Trim().ToLower();
+            string? removeInput = Console.ReadLine()?.Trim().ToLower();
 
             if (removeInput == "j" || removeInput == "yes" || removeInput == "y")
             {
@@ -257,7 +257,7 @@ class SteamWorkshopChecker
         Console.WriteLine("💡 Beispiel: iMeds;SCEEP_Hotwire;GreenHouse");
         Console.Write("➤ ");
 
-        string input = Console.ReadLine()?.Trim();
+    string? input = Console.ReadLine()?.Trim();
 
         if (string.IsNullOrEmpty(input))
         {
@@ -375,7 +375,7 @@ class SteamWorkshopChecker
             // Versuche den Titel zu finden
             var titleNode = doc.DocumentNode.SelectSingleNode("//div[@class='workshopItemTitle']");
             
-            string title = null;
+            string? title = null;
             if (titleNode != null)
             {
                 title = titleNode.InnerText?.Trim() ?? "Unbekannt";
@@ -408,7 +408,7 @@ class SteamWorkshopChecker
             }
 
             // Suche nach Mod ID
-            string modId = ExtractModId(content);
+            string? modId = ExtractModId(content);
             if (!string.IsNullOrEmpty(modId))
             {
                 workshopResults[workshopId] = modId;
@@ -416,7 +416,7 @@ class SteamWorkshopChecker
             }
 
             // Überprüfe auf Warnungen
-            string warning = null;
+            string? warning = null;
 
             // Warnung 1: "Working Outdated" → ROT + [ACHTUNG OUTDATE]
             if (title.Contains("Outdated", StringComparison.OrdinalIgnoreCase) || 
@@ -447,7 +447,7 @@ class SteamWorkshopChecker
         }
     }
 
-    static string ExtractModId(string htmlContent)
+    static string? ExtractModId(string htmlContent)
     {
         // Suche GENAU nach: Mod ID: " iMeds" (mit Anführungszeichen und Zeilenumbruch möglich)
         var match = Regex.Match(htmlContent, @"<b>Mod\s+ID:</b>\s*=\s*[""']([a-zA-Z0-9_\-\[\]]+)[""']", RegexOptions.IgnoreCase | RegexOptions.Singleline);
@@ -472,7 +472,7 @@ class SteamWorkshopChecker
                 return result;
         }
 
-        return null!;
+    return null;
     }
 
     static string SplitModId(string info)
@@ -496,7 +496,7 @@ class SteamWorkshopChecker
         return ""; // Wir haben bereits alles geschrieben
     }
 
-    static void PrintWithColoredModId(string info)
+    static void PrintWithColoredModId(string? info)
     {
         // Schreib Titel normal (grün durch vorherige Color) und Mod ID in blau
         if (string.IsNullOrEmpty(info))

@@ -12,10 +12,22 @@
 
         <!-- Header -->
         <Border Grid.Row="0" Background="#2a2a3e" Padding="20">
-            <StackPanel>
-                <TextBlock Text="🔍 Steam Workshop Checker Pro" FontSize="28" FontWeight="Bold" Foreground="#00d4ff"/>
-                <TextBlock Text="(C) iamgue 2025" FontSize="12" Foreground="#999" Margin="0,5,0,0"/>
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🔍 Steam Workshop Checker Pro" FontSize="28" FontWeight="Bold" Foreground="#00d4ff"/>
+                        <TextBlock x:Name="HeaderVersionText" Text="" FontSize="16" Foreground="#ffcc00" Margin="12,6,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <TextBlock Text="(C) iamgue 2025" FontSize="12" Foreground="#999" Margin="0,5,0,0"/>
+                </StackPanel>
+                <Button Grid.Column="1" x:Name="AboutButton" Content="ℹ Über" Padding="12,6" Margin="10,0,0,0"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Click="AboutButton_Click"
+                        Background="#3A3A4F" Foreground="#E0E0E0"/>
+            </Grid>
         </Border>
 
         <!-- Main Content -->
