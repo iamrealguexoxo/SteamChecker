@@ -2,6 +2,25 @@
 
 Ein modernes Tool zum Prüfen und Verwalten von Steam Workshop Items. Verfügbar als **CLI** (Kommandozeile) und **WPF GUI** (grafische Oberfläche).
 
+## Für alle, die „einfach nur prüfen“ wollen
+
+Dieses Tool hilft dir, fehlerhafte oder gelöschte Workshop-Mods für deinen Zomboid-Server schnell zu finden – ohne Technik-Wissen.
+
+- Erkennt gelöschte/privat gestellte Items und Mods ohne Titel
+- Liest die Mod-ID automatisch aus und warnt bei möglichen Problemen (z. B. „Outdated“)
+- Zeigt dir eine bereinigte Liste an, mit der du deine Server-Config leicht aktualisieren kannst
+- Keine Installation nötig (fertige ZIP herunterladen, entpacken, starten)
+- Kein Steam-Login erforderlich
+
+Schnellstart (Windows App):
+1) Lade die neueste Version herunter: https://github.com/iamrealguexoxo/SteamChecker/releases/latest
+2) Entpacke die ZIP und starte `SteamCheckerWPF.exe`
+3) Füge deine Workshop-IDs ein (Semikolon-getrennt, z. B. `2709866494;3445949422;...`)
+4) Klicke auf „Prüfen“ – rot markierte bzw. gelöschte Einträge solltest du entfernen
+5) Optional: „Mod-IDs vergleichen“, um deine Config-IDs abzugleichen
+
+Du möchtest lieber die Konsole nutzen? Unten findest du eine einfache Anleitung für die CLI.
+
 **English version below — Deutsche Version zuerst.**
 
 ---
