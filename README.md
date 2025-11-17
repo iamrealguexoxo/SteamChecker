@@ -139,6 +139,9 @@ python -m python_steam_checker.gui_qml
 - Live-Progress, Abbrechen, „Warnungs-Mods entfernen“, Mod-ID-Vergleich und kopierbare bereinigte Liste.
 - Optionales GIF im About-Dialog: lege `python_steam_checker/assets/bart.gif` ab.
 
+<img width="1002" height="733" alt="{DEB1D538-C773-4F40-BDAD-EA2B65B72849}" src="https://github.com/user-attachments/assets/c352623f-0936-4de6-959a-ec672c0ed3f2" />
+
+
 Tipps:
 - PySide6 ist aktuell nicht für Python 3.14 verfügbar. Verwende bei Bedarf Python 3.13:
 ```powershell
