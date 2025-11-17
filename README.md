@@ -25,7 +25,7 @@ Du möchtest lieber die Konsole nutzen? Unten findest du eine einfache Anleitung
 
 ---
 
-## � Neueste Änderungen / Latest changes
+## ✨ Neueste Änderungen / Latest changes
 
 <!-- CHANGELOG:START -->
 ## 1.0.0 — 2025-11-02
@@ -49,7 +49,7 @@ Du möchtest lieber die Konsole nutzen? Unten findest du eine einfache Anleitung
 
 ---
 
-## �🖼️ WPF Graphical Interface (New!)
+## 🖼️ WPF Graphical Interface (New!)
 
 ![Steam Workshop Checker Pro GUI](screenshot-wpf.png)
 
@@ -94,6 +94,102 @@ So kannst du die angezeigte Version bequem steuern (optional in der `SteamChecke
   
 </PropertyGroup>
 ```
+
+---
+
+## 🐍 Python GUI & CLI
+
+Für alle, die das Tool lieber in Python nutzen möchten, gibt es jetzt eine vollständige Python-Implementierung mit drei Oberflächen (Tkinter, Qt Widgets und QML) plus CLI. Die Python-Version hält Funktionsparität zur ursprünglichen C#-Variante – inklusive Warnungsbereinigung, Mod-ID-Vergleich und neuer Diagnose-Features.
+
+### Kernfunktionen (gelten für alle Python-Frontends)
+- 🔄 **Streaming-Prüfung**: Fortschritt, Status-Text und Zusammenfassung aktualisieren sich live.
+- 🆔 **Multi-Mod-ID-Erkennung**: Unterstützt mehrere IDs pro Workshop-Eintrag (auch mit Leerzeichen, Klammern oder `&`).
+- ⚠️ **Warnungslogik**: Kennzeichnet automatisch "Outdated"-Titel oder reine B42-Mods.
+- 🧹 **Warnungs-Mods entfernen**: Ein Klick erzeugt eine bereinigte ID-Liste ohne riskante Mods.
+- 🔍 **Mod-ID-Vergleich**: Liefert "VORHANDEN / FEHLT / ZUSÄTZLICH" und markiert Einträge direkt in der Tabelle.
+- 📋 **Kontext-Aktionen**: Alle GUIs bieten Copy-Funktionen für Links, IDs und die bereinigte Liste.
+- 🌐 **Keine Anmeldung nötig**: Es wird nur die öffentliche Workshop-Seite abgefragt.
+
+### Schnellstart (Python GUI)
+```powershell
+cd .\SteamChecker
+python -m venv .venv; .\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python -m python_steam_checker.gui_tk
+```
+
+### Alternativ: Moderne Qt-GUI (PySide6)
+```powershell
+cd .\SteamChecker
+python -m venv .venv; .\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python -m python_steam_checker.gui_qt
+```
+
+### Neu: Qt Quick/QML GUI (Material)
+```powershell
+cd .\SteamChecker
+if (-not (Test-Path .venv313)) { C:\Python313\python.exe -m venv .venv313 }
+ .\.venv313\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+python -m python_steam_checker.gui_qml
+```
+- QML-Oberfläche mit Qt Quick Controls 2 (Material-Theme, Hell/Dunkel-Umschaltung).
+- Live-Progress, Abbrechen, „Warnungs-Mods entfernen“, Mod-ID-Vergleich und kopierbare bereinigte Liste.
+- Optionales GIF im About-Dialog: lege `python_steam_checker/assets/bart.gif` ab.
+
+Tipps:
+- PySide6 ist aktuell nicht für Python 3.14 verfügbar. Verwende bei Bedarf Python 3.13:
+```powershell
+cd .\SteamChecker
+if (-not (Test-Path .venv313)) { C:\Python313\python.exe -m venv .venv313 }
+ .\.venv313\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+python -m python_steam_checker.gui_qt
+```
+
+### Schnellstart (Python CLI)
+```powershell
+cd .\SteamChecker
+python -m venv .venv; .\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python .\steam_workshop_checker_python.py
+```
+
+### Python Dateien
+- `python_steam_checker/core.py` – Kernlogik (Abruf, Parsing, Warnungen, Vergleich)
+- `python_steam_checker/gui_tk.py` – Tkinter GUI (Prüfen, Zusammenfassung, Warnungs-Entfernung, ID-Vergleich, About-Dialog)
+- `python_steam_checker/gui_qt.py` – PySide6 GUI (modernes UI, gleiche Features wie Tk, Abbrechen + Theme-Toggle)
+- `python_steam_checker/gui_qml.py` + `python_steam_checker/qml/Main.qml` – Qt Quick Material UI mit erweiterten Analyse-Features
+
+### Qt-GUI Features (Zusatz)
+- Abbrechen-Button: bricht laufende Prüfungen sauber ab.
+- Theme-Toggle: kleines Symbol (🌙/☀️) oben – wechselt zwischen Dunkel/Hell.
+- `steam_workshop_checker_python.py` – Konsolenversion (paritätisch zu C#)
+
+### About-Dialog mit animiertem GIF
+- Button `ℹ Über` öffnet ein Fenster. Lege deine GIF-Datei unter `python_steam_checker/assets/bart.gif` ab (z. B. tanzender Bart), dann wird sie animiert angezeigt. Ohne GIF erscheint ein Hinweis.
+
+Hinweis: Die Python-GUIs nutzen Worker-Threads, um den UI-Thread nicht zu blockieren, und zeigen eine übersichtliche Tabelle sowie eine bereinigte ID-Liste an.
+
+### QML Material GUI – Highlights
+- 📋 **Filterbar**: Drei Live-Filter für Status, Warnung und Vergleichs-Tag (OK / Gemischt / Zusätzlich). Der Filterbereich ist einklappbar.
+- 🏷️ **Vergleichs-Badges**: Jeder Eintrag erhält einen farbigen Pillen-Status (OK, Gemischt oder Zusätzlich), sobald ein Mod-ID-Vergleich durchgeführt wurde.
+- 🔗 **Klickbare Felder**: Workshop-ID und Titel öffnen direkt den Browser; Rechtsklick bietet "Link kopieren" oder "ID kopieren".
+- 📜 **Autoscroll**: Während des Prüfens scrollt die Liste automatisch nach unten, damit die neuesten Resultate sichtbar bleiben.
+- 🎨 **Material Dark/Light**: Schneller Theme-Wechsel, abgestimmte Farben und dezente Zeilenhintergründe.
+- 🧰 **Kontextdialoge**: Vergleichsergebnis und About-Dialog (mit optionalem `bart.gif`) erscheinen als moderne Popups.
+
+### Tkinter GUI – Highlights
+- Klassische Desktop-Oberfläche ohne zusätzliche Dependencies.
+- Zeigt dieselben Felder wie Qt/QML und nutzt die neue Multi-ID-Logik im Hintergrund.
+- Fortschritt und Zusammenfassung in einem Fenster, inklusive Warnungsbereinigung.
+
+### Qt Widgets GUI – Highlights
+- Dark/Light Theme-Toggle, Abbrechen-Button und moderne Controls basierend auf PySide6.
+- Tabellarische Darstellung analog zur Tk-Version, inklusive Zugriff auf Vergleichsdialog und bereinigte Liste.
 
 ---
 

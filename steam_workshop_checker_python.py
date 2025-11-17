@@ -12,7 +12,7 @@ class SteamWorkshopChecker:
 
     def main(self):
         print("╔════════════════════════════════════════════════════════════════╗")
-        print("║        Steam Workshop Item Checker v1.0 (Python)              ║")
+        print("║        Steam Workshop Item Checker v3.0 (Python)              ║")
         print("╚════════════════════════════════════════════════════════════════╝\n")
 
         while True:
@@ -114,6 +114,28 @@ class SteamWorkshopChecker:
 
         print("\n" + "═" * 100)
 
+        # ===== ABFRAGE: Mods mit Warnungen entfernen (Feature-Parität zur C# Version) =====
+        if with_warnings:
+            print("\n❓ Möchtest du die Mods mit Warnungen aus deiner Liste entfernen?")
+            print("⚠️  Diese Mods werden gelöscht:")
+            for workshop_id, _, _ in with_warnings:
+                print(f"  - {workshop_id}")
+            print("\n(j/n)")
+            remove_input = input("➤ ").strip().lower()
+
+            if remove_input in ["j", "yes", "y"]:
+                ids_to_remove = {wid for wid, _, _ in with_warnings}
+                remaining_ids = [wid for (wid, _, _) in ok if wid not in ids_to_remove]
+
+                print("\n" + "═" * 100)
+                print("\n✅ AKTUALISIERTE LISTE (ohne Mods mit Warnungen):\n")
+                if remaining_ids:
+                    print("\033[92m" + ";".join(remaining_ids) + "\033[0m")
+                    print(f"\n📊 {len(remaining_ids)} Mods in deiner Liste verbleibend")
+                else:
+                    print("\033[93m⚠️  Alle Mods werden entfernt!\033[0m")
+                print("\n" + "═" * 100)
+
     def check_workshop_id(self, workshop_id):
         url = f"https://steamcommunity.com/sharedfiles/filedetails/?id={workshop_id}"
 
@@ -160,14 +182,14 @@ class SteamWorkshopChecker:
 
     def extract_title(self, html):
         # Versuche den Titel aus workshopItemTitle zu extrahieren
-        match = re.search(r'<div class="workshopItemTitle">(.*?)</div>', html)
+        match = re.search(r'<div\s+class="workshopItemTitle">(.*?)</div>', html, re.IGNORECASE | re.DOTALL)
         if match:
             title = match.group(1).strip()
             if title:
                 return title
 
         # Fallback: OG-Tags
-        match = re.search(r'<meta property="og:title" content="(.*?)"', html)
+        match = re.search(r'<meta\s+property="og:title"\s+content="(.*?)"', html, re.IGNORECASE)
         if match:
             title = match.group(1).strip()
             if title:
@@ -177,14 +199,22 @@ class SteamWorkshopChecker:
 
     def extract_mod_id(self, html):
         # Suche nach: Mod ID: [beliebiger text]
-        match = re.search(r'Mod\s+ID:\s*([a-zA-Z0-9_\-\[\]]+)', html)
+        # 1) <b>Mod ID:</b> = "iMeds"
+        match = re.search(r'<b>Mod\s+ID:</b>\s*=\s*["\']([a-zA-Z0-9_\-\[\]]+)["\']', html, re.IGNORECASE | re.DOTALL)
         if match:
             return match.group(1).strip()
 
-        # Fallback: Suche nach mod.info oder ähnliches
-        match = re.search(r'mod[""\'\']\s*:\s*[""\'\'](.*?)[""\'\']+', html, re.IGNORECASE)
+        # 2) Mod ID: "Something"
+        match = re.search(r'Mod\s+ID[:\s]*["\']([a-zA-Z0-9_\-\[\]]+)["\']', html, re.IGNORECASE)
         if match:
             return match.group(1).strip()
+
+        # 3) Mod ID: iMeds
+        match = re.search(r'Mod\s+ID:\s*([a-zA-Z0-9_\-\[\]]+)', html, re.IGNORECASE)
+        if match:
+            candidate = match.group(1).strip()
+            if candidate not in ("=", "$0"):
+                return candidate
 
         return None
 
