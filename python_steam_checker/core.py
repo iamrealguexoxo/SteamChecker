@@ -150,6 +150,21 @@ class SteamWorkshopCore:
                 results.append(v)
 
         # 2) Unquoted candidates (may contain multiple tokens)
+        noise_words = {
+            "is", "are", "from", "here", "some", "mods", "mod", "and", "the", "not",
+            "all", "for", "you", "too", "can", "have", "your", "own", "unique", "idea",
+            "developed", "just", "time", "created", "paid", "hidden", "private", "use",
+            "please", "this", "that", "they", "these", "those"
+        }
+
+        def looks_like_noise(token: str) -> bool:
+            lower = token.lower()
+            if lower in noise_words:
+                return True
+            if len(token) <= 3 and token.isalpha() and token.islower():
+                return True
+            return False
+
         for m in unquoted_pat.finditer(html):
             candidate = m.group(1).strip()
             if not candidate:
@@ -188,9 +203,14 @@ class SteamWorkshopCore:
             segment = seg_match.group(1)
             # Split by common separators to support multiple IDs on one line
             tokens = re.split(r'[;,\/]+\s*', segment)
-            for t in tokens:
+            for idx, t in enumerate(tokens):
                 t = t.strip()
-                if t and t not in results:
+                if not t:
+                    continue
+                if looks_like_noise(t):
+                    # Once we hit narrative text, stop looking at the rest of this line.
+                    break
+                if t not in results:
                     results.append(t)
 
         return results if results else None
