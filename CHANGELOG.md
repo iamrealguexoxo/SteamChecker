@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## 1.1.0 — 2025-11-28
+
+### Added
+- **Python GUI & CLI**: Complete Python port with three GUI variants (Tkinter, Qt Widgets, QML)
+- **QML Material GUI**: Modern Qt Quick Controls 2 interface with Material theme
+- **Multi-Mod-ID Support**: Extracts multiple Mod-IDs per Workshop item (spaces, brackets, ampersands)
+- **Comparison Badges**: Visual pills showing OK/Gemischt/Zusätzlich after Mod-ID comparison
+- **Filter Controls**: Collapsible filter panel for Status, Warning, and Compare tags
+- **Clickable Rows**: Workshop-IDs and titles open browser; right-click for context menu
+- **Autoscroll**: List auto-scrolls during checking to show latest results
+- **Dark/Light Theme Toggle**: Quick switch between themes in all GUIs
+- **Cancel Button**: Abort running checks cleanly
+- **About Dialog**: With optional animated GIF support
+
+### Changed
+- **Project Structure**: Reorganized into `csharp/`, `python/`, `go/`, `releases/` folders
+- **Noise Word Filter**: Excludes common words (is, are, the, my, etc.) from Mod-ID extraction
+- **HTML Entity Decoding**: Properly handles `&amp;` and other entities in titles
+
+### Fixed
+- Mod-ID parsing for items with spaces (e.g., "Planet Terror Katana")
+- Mod-ID parsing for special characters (apostrophes, brackets)
+- Detection of deleted items showing "Project Zomboid :: Steam Community" title
+
 ## 1.0.0 — 2025-11-02
 
 ### Added
