@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
+  </ItemGroup>
+
+  <!-- Exclude non-WPF files that cause conflicts -->
+  <ItemGroup>
+    <Compile Remove="pc_automation_tool.cs" />
+    <Compile Remove="AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <!-- App resources -->
+  <ItemGroup>
+    <Resource Include="loading.gif" />
+  </ItemGroup>
+
+</Project>

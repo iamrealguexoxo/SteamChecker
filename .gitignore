@@ -32,6 +32,11 @@ TestResults/
 __pycache__/
 *.pyc
 
+# Python virtual environments
+.venv/
+.venv313/
+venv/
+
 # OS-specific
 .DS_Store
 Thumbs.db
