@@ -43,11 +43,11 @@ namespace SteamCheckerWPF
             if (!string.IsNullOrWhiteSpace(file)) return file;
 
             var ver = asm.GetName().Version?.ToString(3);
-            return string.IsNullOrWhiteSpace(ver) ? "1.0.0" : ver!;
+            return string.IsNullOrWhiteSpace(ver) ? "1.1.0" : ver!;
         }
         catch
         {
-            return "1.0.0";
+            return "1.1.0";
         }
     }
 }

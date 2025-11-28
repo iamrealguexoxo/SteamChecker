@@ -21,7 +21,7 @@ var workshopResults = make(map[string]string)
 
 func main() {
 	fmt.Println("╔════════════════════════════════════════════════════════════════╗")
-	fmt.Println("║        Steam Workshop Item Checker v1.0 (Go)                  ║")
+	fmt.Println("║        Steam Workshop Item Checker v1.1 (Go)                  ║")
 	fmt.Println("║            (C) iamgue 2025                                    ║")
 	fmt.Println("╚════════════════════════════════════════════════════════════════╝\n")
 

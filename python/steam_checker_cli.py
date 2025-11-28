@@ -12,7 +12,7 @@ class SteamWorkshopChecker:
 
     def main(self):
         print("╔════════════════════════════════════════════════════════════════╗")
-        print("║        Steam Workshop Item Checker v3.0 (Python)              ║")
+        print("║        Steam Workshop Item Checker v1.1 (Python)              ║")
         print("╚════════════════════════════════════════════════════════════════╝\n")
 
         while True:

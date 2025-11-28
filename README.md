@@ -44,10 +44,10 @@ https://github.com/iamrealguexoxo/SteamChecker/releases/latest
 
 | Release | Beschreibung |
 |---------|--------------|
-| `SteamChecker-Python-v1.0.zip` | Python GUI & CLI (empfohlen) |
-| `SteamChecker-WPF-v1.0.zip` | Windows WPF GUI |
-| `SteamChecker-CSharp-CLI-v1.0.zip` | C# Kommandozeile |
-| `SteamChecker-Go-v1.0.zip` | Go Version |
+| `SteamChecker-Python-v1.1.zip` | Python GUI & CLI (empfohlen) |
+| `SteamChecker-WPF-v1.1.zip` | Windows WPF GUI |
+| `SteamChecker-CSharp-CLI-v1.1.zip` | C# Kommandozeile |
+| `SteamChecker-Go-v1.1.zip` | Go Version |
 
 **English version below — Deutsche Version zuerst.**
 
