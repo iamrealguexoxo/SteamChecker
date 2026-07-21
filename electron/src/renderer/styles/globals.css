@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0a0a0c;
+  --bg-elevated: #141416;
+  --card: #19191d;
+  --card-hover: #222227;
+  --border: #27272d;
+  --text: #e7ecf3;
+  --muted: #82828c;
+  --accent: #66c0f4;        /* Steam blue */
+  --accent-hover: #4aa8e0;
+  --radius: 0.9rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  user-select: none;
+}
+
+.mono {
+  font-family: 'SF Mono', ui-monospace, 'JetBrains Mono', Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #303038; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #3d3d46; }
+
+.drag-region { -webkit-app-region: drag; }
+.no-drag { -webkit-app-region: no-drag; }
+
+/* Animated accent bar under the header — A→B→A gradient sliding across a mask.
+ * Same trick as our other apps' .header-accent, retinted to Steam blue. */
+.header-accent {
+  background-image: linear-gradient(90deg, #66c0f4, #4aa8e0, #66c0f4);
+  background-size: 200% 100%;
+  animation: header-shift 7s ease-in-out infinite;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+  opacity: 0.9;
+  will-change: background-position;
+}
+
+@keyframes header-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-accent { animation: none; }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+textarea, input { user-select: text; }

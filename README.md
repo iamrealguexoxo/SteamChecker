@@ -1,11 +1,15 @@
 # Steam Workshop Item Checker für Zomboid
 
-Ein modernes Tool zum Prüfen und Verwalten von Steam Workshop Items. Verfügbar in **C#**, **Python** und **Go**.
+Ein modernes Tool zum Prüfen und Verwalten von Steam Workshop Items. Verfügbar als **Electron-Desktop-App** (macOS + Windows, empfohlen) sowie in **C#**, **Python** und **Go**.
 
 ## 📁 Projektstruktur
 
 ```
 SteamChecker/
+├── electron/                  # Electron Desktop-App (React + Vite, macOS + Windows)
+│   ├── src/main/checker.ts    # Fetch + Titel-/Mod-ID-Extraktion + Warnregeln
+│   ├── src/renderer/App.tsx   # UI
+│   └── build/                 # App-Icons (icns/ico/png)
 ├── csharp/                    # C# Versionen
 │   ├── cli/                   # Kommandozeilen-Tool (.NET 9)
 │   └── wpf/                   # WPF GUI (Windows Desktop)
@@ -44,7 +48,9 @@ https://github.com/iamrealguexoxo/SteamChecker/releases/latest
 
 | Release | Beschreibung |
 |---------|--------------|
-| `SteamChecker-Python-v1.1.zip` | Python GUI & CLI (empfohlen) |
+| `SteamChecker-*-mac-universal.dmg` | **Electron App für macOS** (Intel + Apple Silicon, empfohlen) |
+| `SteamChecker-*-win-x64.exe` | **Electron App für Windows** (Setup-Installer) |
+| `SteamChecker-Python-v1.1.zip` | Python GUI & CLI |
 | `SteamChecker-WPF-v1.1.zip` | Windows WPF GUI |
 | `SteamChecker-CSharp-CLI-v1.1.zip` | C# Kommandozeile |
 | `SteamChecker-Go-v1.1.zip` | Go Version |
@@ -80,6 +86,40 @@ https://github.com/iamrealguexoxo/SteamChecker/releases/latest
 - Mod-ID parsing for special characters (apostrophes, brackets)
 - Detection of deleted items showing "Project Zomboid :: Steam Community" title
 <!-- CHANGELOG:END -->
+
+---
+
+## ⚡ Electron Desktop-App (neu, empfohlen)
+
+Die moderne Neuauflage im Design der übrigen Apps: eine schlanke Electron-App,
+die mit **identischem Look auf macOS und Windows** läuft. Der HTTP-Request läuft
+im Electron-Main-Prozess (kein CORS-Problem wie im Browser); die Titel- und
+Mod-ID-Extraktion ist ein 1:1-Port der Python-Kernlogik.
+
+### Features
+- 🔎 **Live-Streaming-Prüfung** mit Fortschrittsbalken
+- 🚦 **Ampel-Status**: OK / Warnung (Outdated, B42) / Problem (gelöscht, privat, Fehler)
+- 🆔 **Automatische Mod-ID-Extraktion** (auch mehrere IDs pro Item)
+- 🧹 **Bereinigte Liste** zum Kopieren (ohne die geflaggten Items)
+- 🔍 **Mod-ID-Abgleich** gegen deine Server-Config (vorhanden / fehlt / zusätzlich)
+- 🔗 Klick auf eine ID öffnet die Workshop-Seite im Browser
+- 🧩 Erkennt zusätzlich Steams generische Fehlerseite bei nicht existierenden IDs
+
+### Download
+Fertige Builds unter **[Releases](https://github.com/iamrealguexoxo/SteamChecker/releases/latest)**:
+- macOS: `SteamChecker-*-mac-universal.dmg` (ungesigniert → beim ersten Start Rechtsklick → „Öffnen")
+- Windows: `SteamChecker-*-win-x64.exe` (ungesigniert → SmartScreen: „Weitere Informationen" → „Trotzdem ausführen")
+
+### Aus dem Quellcode
+
+```bash
+cd electron
+npm install
+npm run dev            # Electron + Vite Dev-Server
+npm run build          # Production-Bundle
+npm run package:mac    # DMG (Universal)
+npm run package:win    # Windows-Setup (.exe)
+```
 
 ---
 
