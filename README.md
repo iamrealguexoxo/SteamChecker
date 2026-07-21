@@ -96,6 +96,8 @@ die mit **identischem Look auf macOS und Windows** läuft. Der HTTP-Request läu
 im Electron-Main-Prozess (kein CORS-Problem wie im Browser); die Titel- und
 Mod-ID-Extraktion ist ein 1:1-Port der Python-Kernlogik.
 
+![SteamChecker Electron App](electron/screenshot.png)
+
 ### Features
 - 🔎 **Live-Streaming-Prüfung** mit Fortschrittsbalken
 - 🚦 **Ampel-Status**: OK / Warnung (Outdated, B42) / Problem (gelöscht, privat, Fehler)
